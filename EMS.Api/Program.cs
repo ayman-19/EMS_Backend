@@ -1,4 +1,5 @@
 using EMS.Api;
+using EMS.Api.Middlewares;
 using EMS.Application;
 using EMS.Persistence;
 using FastEndpoints;
@@ -25,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionHandler>();
 app.UseHttpsRedirection();
 app.UseFastEndpoints();
 app.UseAuthorization();

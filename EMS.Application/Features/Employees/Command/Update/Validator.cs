@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EMS.Application.Features.Employees.Command.Update
 {
-    public sealed class UpdateEmployeeValidator:AbstractValidator<UpdateEmployeeCommand>
+    public sealed class UpdateEmployeeValidator : AbstractValidator<UpdateEmployeeCommand>
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -19,37 +19,46 @@ namespace EMS.Application.Features.Employees.Command.Update
             ValidateRequest(scope.ServiceProvider.GetRequiredService<IEmployeeRepository>());
         }
 
-        private void ValidateRequest(IEmployeeRepository branchRepository)
+        private void ValidateRequest(IEmployeeRepository employeeRepository)
         {
             RuleFor(e => e.id)
-              .NotEmpty()
-              .WithMessage(" ID MUST NOT BE EMPTY")
-              .NotNull()
-              .WithMessage("ID NAME MUST NOT BE EMPTY");
+                .NotEmpty()
+                .WithMessage(" ID MUST NOT BE EMPTY")
+                .NotNull()
+                .WithMessage("ID NAME MUST NOT BE EMPTY");
 
             RuleFor(e => e.FirstName)
-               .NotEmpty()
-               .WithMessage("FIRST NAME MUST NOT BE EMPTY")
-               .NotNull()
-               .WithMessage("FIRST NAME MUST NOT BE EMPTY");
+                .NotEmpty()
+                .WithMessage("FIRST NAME MUST NOT BE EMPTY")
+                .NotNull()
+                .WithMessage("FIRST NAME MUST NOT BE EMPTY");
 
             RuleFor(e => e.LastName)
-               .NotEmpty()
-               .WithMessage("LAST NAME MUST NOT BE EMPTY")
-               .NotNull()
-               .WithMessage("LAST NAME MUST NOT BE EMPTY");
+                .NotEmpty()
+                .WithMessage("LAST NAME MUST NOT BE EMPTY")
+                .NotNull()
+                .WithMessage("LAST NAME MUST NOT BE EMPTY");
 
             RuleFor(e => e.Email)
-             .NotEmpty()
-             .WithMessage("Email MUST NOT BE EMPTY")
-             .NotNull()
-             .WithMessage("Email MUST NOT BE EMPTY");
+                .NotEmpty()
+                .WithMessage("Email MUST NOT BE EMPTY")
+                .NotNull()
+                .WithMessage("Email MUST NOT BE EMPTY");
+
+            RuleFor(e => e)
+                .MustAsync(
+                    async (req, cancellationToken) =>
+                        !await employeeRepository.IsAnyExistAsync(e =>
+                            e.Email == req.Email && e.Id != req.id
+                        )
+                )
+                .WithMessage("Email IS EXIST.");
 
             RuleFor(e => e.Position)
-               .NotEmpty()
-               .WithMessage("Position MUST NOT BE EMPTY")
-               .NotNull()
-               .WithMessage("Position MUST NOT BE EMPTY");
-        } 
-    } 
- }
+                .NotEmpty()
+                .WithMessage("Position MUST NOT BE EMPTY")
+                .NotNull()
+                .WithMessage("Position MUST NOT BE EMPTY");
+        }
+    }
+}
