@@ -1,16 +1,15 @@
-﻿using EMS.Application.Behaviores;
+﻿using System.Reflection;
+using EMS.Application.Behaviores;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+
 namespace EMS.Application
 {
     public static class Registeration
     {
         public static IServiceCollection RegisterApplicationDepenedncies(
-            this IServiceCollection services,
-            IConfiguration configuration
+            this IServiceCollection services
         )
         {
             services.AddMediatR(cfg =>

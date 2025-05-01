@@ -9,12 +9,16 @@ namespace EMS.Persistence.Impelementations
     {
         private readonly EMSDBContext _context;
 
-        public EmployeeRepository(EMSDBContext context) : base(context)
+        public EmployeeRepository(EMSDBContext context)
+            : base(context)
         {
             _context = context;
         }
 
-        public async ValueTask<Employee> GetByIdAsync(int Id, CancellationToken cancellationToken) =>
+        public async ValueTask<Employee> GetByIdAsync(
+            int Id,
+            CancellationToken cancellationToken
+        ) =>
             await _context
                 .Set<Employee>()
                 .AsTracking()
@@ -25,6 +29,5 @@ namespace EMS.Persistence.Impelementations
                 .Set<Employee>()
                 .Where(s => s.Id == id)
                 .ExecuteDeleteAsync(cancellationToken);
-
     }
 }
