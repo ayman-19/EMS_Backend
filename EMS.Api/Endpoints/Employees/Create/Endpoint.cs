@@ -9,7 +9,7 @@ namespace EMS.Api.Endpoints.Employees.Create
     {
         public override void Configure()
         {
-            Post("Employee/Add");
+            Post("employees/add");
             AllowAnonymous();
         }
 

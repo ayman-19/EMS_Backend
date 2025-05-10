@@ -11,7 +11,7 @@ namespace EMS.Api.Endpoints.Employees.GetById
         {
             public override void Configure()
             {
-                Get("Employee/GetById/{id}");
+                Get("employees/getById/{id}");
                 AllowAnonymous();
             }
 

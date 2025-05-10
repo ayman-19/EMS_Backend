@@ -9,7 +9,7 @@ namespace EMS.Api.Endpoints.Employees.Delete
     {
         public override void Configure()
         {
-            Delete("Employee/Delete/{id}");
+            Delete("employees/delete/{id}");
             AllowAnonymous();
         }
 

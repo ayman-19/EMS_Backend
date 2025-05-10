@@ -6,11 +6,11 @@ using MediatR;
 namespace EMS.Api.Endpoints.Employees.Paginate
 {
     public class PaginateEndpoint
-        : Endpoint<PaginateEmployeeQuery, ResponseOf<IReadOnlyCollection<PaginateEmployeeResult>>>
+        : Endpoint<PaginateEmployeeQuery, ResponseOf<PaginateEmployeeResult>>
     {
         public override void Configure()
         {
-            Post("Employee/Paginate");
+            Post("employees/paginate");
             AllowAnonymous();
         }
 

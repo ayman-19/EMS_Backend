@@ -1,9 +1,9 @@
-﻿using EMS.Domain.Abstraction;
+﻿using System.Linq.Expressions;
+using EMS.Domain.Abstraction;
 using EMS.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace EMS.Persistence.Impelementations
 {
@@ -85,7 +85,7 @@ namespace EMS.Persistence.Impelementations
             CancellationToken cancellationToken = default
         ) => await _entities.AnyAsync(pridecate, cancellationToken);
 
-        public async Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
+        public async Task<(IReadOnlyCollection<TSelctor>, int count)> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
             Expression<Func<TEntity, TSelctor>> Selctor,
@@ -103,12 +103,14 @@ namespace EMS.Persistence.Impelementations
             if (includes != null)
                 query = includes(query);
 
+            int count = query.Count();
+
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
             if (ordering != null)
                 query = query.OrderByDescending(ordering);
 
-            return await query.Select(Selctor).ToListAsync(cancellationToken);
+            return (await query.Select(Selctor).ToListAsync(cancellationToken), count);
         }
 
         public ValueTask<EntityEntry<TEntity>> UpdateAsync(
@@ -117,4 +119,3 @@ namespace EMS.Persistence.Impelementations
         ) => ValueTask.FromResult(_entities.Update(entity));
     }
 }
-

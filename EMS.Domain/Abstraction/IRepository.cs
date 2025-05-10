@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
 
 namespace EMS.Domain.Abstraction
 {
@@ -42,7 +42,7 @@ namespace EMS.Domain.Abstraction
             TEntity entity,
             CancellationToken cancellationToken = default
         );
-        Task<IReadOnlyCollection<TSelctor>> PaginateAsync<TSelctor>(
+        Task<(IReadOnlyCollection<TSelctor>, int count)> PaginateAsync<TSelctor>(
             int page,
             int pageSize,
             Expression<Func<TEntity, TSelctor>> Selctor,
